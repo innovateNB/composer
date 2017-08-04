@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+  dashboard:
+    build: ./dashboard
+    volumes:
+      - ./dashboard:/usr/src/dashboard
+    ports:
+      - '4200:4200'
+      - '35730:35730'
+    command: 'ember s'
+  api:
+    build: ./api
+    volumes:
+      - ./api:/usr/src/api
+    ports:
+      - '3000:3000'
+    command: 'yarn start'
+
+  kiosk:
+    build: ./ki-os
+    ports: 
+      - '8080:8080'
+      - '9090:9090'
+    command: 'yarn start:web'
+
+  postgres:
+    image: postgres:9.6.2
+    environment:
+      POSTGRES_DB: 'nboi_production'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'strict.bases.prospect.affluent.mephitic'
+    ports:
+      - '5432:5432'
