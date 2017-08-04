@@ -1,0 +1,9 @@
+[submodule "dashboard"]
+	path = dashboard
+	url = git@github.com:innovateNB/dashboard.git
+[submodule "api"]
+	path = api
+	url = git@github.com:innovateNB/api.git
+[submodule "ki-os"]
+	path = ki-os
+	url = git@github.com:innovateNB/ki-os.git
