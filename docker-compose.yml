@@ -16,14 +16,30 @@ services:
     ports:
       - '3000:3000'
     command: 'yarn start'
-
   kiosk:
     build: ./ki-os
     ports: 
       - '8080:8080'
       - '9090:9090'
-    command: 'yarn start:web'
-
+    devices:
+      - "/dev/dri:/dev/dri"
+      - "/dev/input:/dev/input"
+      - "/dev/snd:/dev/snd"
+      - "/dev/video0:/dev/video0"
+    volumes:
+      - "/tmp/.X11-unix:/tmp/.X11-unix"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "$HOME/.config/app:/root/.config/app"
+      - ./ki-os:/app
+      - /app/node_modules
+      - ${XDG_RUNTIME_DIR}/pulse/native:${XDG_RUNTIME_DIR}/pulse/native
+    environment:
+      - DISPLAY=${DISPLAY}
+      - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
+      - PULSE_SERVER=unix:${XDG_RUNTIME_DIR}/pulse/native
+    privileged: true
+    restart: always
+    command: bash -c "yarn && yarn start:electron"
   postgres:
     image: postgres:9.6.2
     environment:
